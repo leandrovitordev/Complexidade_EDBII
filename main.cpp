@@ -28,7 +28,7 @@ int main() {
     int numero_repeticoes_ordenacao = 5;
     int numero_buscas_para_media = 10000;
 
-    std::cout << "Iniciando análise empírica de complexidade...\n\n";
+    std::cout << "Iniciando analise empirica de complexidade...\n\n";
 
     // TESTE DOS ALGORITMOS DE ORDENAÇÃO 
 
@@ -43,7 +43,6 @@ int main() {
 
             auto inicio = std::chrono::high_resolution_clock::now();
 
-            // 👇👇 ADICIONE A CHAMADA DA FUNÇÃO AQUI 👇👇
             selectionSort(vetor_para_ordenar.data(), n);
 
             auto fim = std::chrono::high_resolution_clock::now();
@@ -79,27 +78,33 @@ int main() {
     // Número de vezes que vamos repetir a busca para obter um tempo mensurável
 
     std::cout << "\n--- Busca Sequencial ---\n";
-    // Usando o vetor de 'n' rápido para as buscas
+    
+    // Usamos o mesmo número de repetições para uma comparação justa
+    int numero_buscas_para_media_rapida = 1000000;
+
     for (int n : tamanhos_n_rapido) {
         std::vector<int> vetor = gerarVetorAleatorio(n);
-        int alvo = vetor[n / 2]; // Escolhe um elemento do meio para buscar
+        int alvo = vetor[n / 2];
 
         auto inicio = std::chrono::high_resolution_clock::now();
         
-        for(int i = 0; i < numero_buscas_para_media; ++i) {
+        for(int i = 0; i < numero_buscas_para_media_rapida; ++i) {
             buscaSequencial(vetor.data(), n, alvo);
         }
         
         auto fim = std::chrono::high_resolution_clock::now();
 
-        // Calcula a duração total para todas as buscas
-        std::chrono::duration<double, std::micro> duracao_total = fim - inicio;
-        double tempo_por_busca = duracao_total.count() / numero_buscas_para_media;
+        std::chrono::duration<double, std::nano> duracao_total = fim - inicio;
+        double tempo_por_busca = duracao_total.count() / numero_buscas_para_media_rapida;
 
-        std::cout << "N = " << n << ", Tempo por busca: " << tempo_por_busca << " microssegundos\n";
+        std::cout << "N = " << n << ", Tempo por busca: " << tempo_por_busca << " nanossegundos\n";
     }
 
     std::cout << "\n--- Busca Binaria ---\n";
+    
+    // Para algoritmos ultra-rápidos, precisamos de muitas repetições para ter um tempo total mensurável.
+    
+
     for (int n : tamanhos_n_rapido) {
         std::vector<int> vetor = gerarVetorAleatorio(n);
         int alvo = vetor[n / 2];
@@ -107,17 +112,21 @@ int main() {
 
         auto inicio = std::chrono::high_resolution_clock::now();
 
-        for(int i = 0; i < numero_buscas_para_media; ++i) {
+        for(int i = 0; i < numero_buscas_para_media_rapida; ++i) {
             buscaBinaria(vetor.data(), n, alvo);
         }
-        
+
         auto fim = std::chrono::high_resolution_clock::now();
         
-        std::chrono::duration<double, std::micro> duracao_total = fim - inicio;
-        double tempo_por_busca = duracao_total.count() / numero_buscas_para_media;
+        std::chrono::duration<double, std::nano> duracao_total = fim - inicio;
+        double tempo_por_busca = duracao_total.count() / numero_buscas_para_media_rapida;
         
-        std::cout << "N = " << n << ", Tempo por busca: " << tempo_por_busca << " microssegundos\n";
+        std::cout << "N = " << n << ", Tempo por busca: " << tempo_por_busca << " nanossegundos\n";
     }
+
+    std::cout << "\nAnalise concluida.\n";
+    return 0;
+}
 
     std::cout << "\nAnalise concluida.\n";
     return 0;
